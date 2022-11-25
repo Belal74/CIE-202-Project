@@ -104,6 +104,7 @@ operationType GUI::GetUseroperation() const
 			case ICON_DEl: return DEL;
 			case ICON_SAVE: return SAVE;
 			case ICON_SWITCH: return SWITCH;
+			case ICON_COLOR_PALETTE: return COLOR_PALETTE;		
 			default: return EMPTY;	
 			}
 		}
@@ -174,6 +175,7 @@ void GUI::CreateDrawToolBar()
 	MenuIconImages[ICON_SAVE] = "images\\MenuIcons\\save.jpg";
 	MenuIconImages[ICON_SWITCH] = "images\\MenuIcons\\s.jpg";
 	MenuIconImages[ICON_EXIT] = "images\\MenuIcons\\EXIT.jpg";
+	MenuIconImages[ICON_COLOR_PALETTE] = "images\\MenuIcons\\COLOR_PALETTE.jpg";
 	for (int i = 0; i < DRAW_ICON_COUNT; i++)
 		pWind->DrawImage(MenuIconImages[i], i * MenuIconWidth, 0, MenuIconWidth, ToolBarHeight);
 	pWind->SetPen(BLACK, 3);
