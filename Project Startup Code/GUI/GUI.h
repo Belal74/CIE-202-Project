@@ -55,6 +55,7 @@ class GUI
 		ICON_REGULAR,
 		ICON_EXIT,		//Exit icon
 		ICON_SELECT,
+		ICON_COLOR_PALETTE,
 		DRAW_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
 
 	};
