@@ -21,6 +21,10 @@ void Graph::Addshape(shape* pShp)
 	shapesList.push_back(pShp);	
 }
 ////////////////////////////////////////////////////////////////////////////////////
+void Graph::deleteshape(shape* pShp) {
+	shapesList.erase(find(shapesList.begin(), shapesList.end(),pShp));
+}
+
 //Draw all shapes on the user interface
 void Graph::Draw(GUI* pUI) const
 {
