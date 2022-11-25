@@ -39,23 +39,32 @@ class GUI
 		//If you want to change the menu icons order, change the order here
 		ICON_RECT,		//Recangle icon in menu
 		ICON_CIRC,		//Circle icon in menu
-
-		//TODO: Add more icons names here
-
+		ICON_FILL,
+		ICON_DEl,
+		ICON_ovel,
+		ICON_SAVE,
+		ICON_SWITCH,
+		ICON_PEN,
+		ICON_COLOR,
+		ICON_LINE,
+		ICON_OVAL,
+		ICON_SQUA,
+		ICON_TRIANGLE,
+		ICON_IRREGULAR,
+		ICON_FILL,
+		ICON_REGULAR,
 		ICON_EXIT,		//Exit icon
-
+		ICON_SELECT,
 		DRAW_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
 
 	};
 
 	enum PlayMenuIcon //The icons of the Play menu (you should add more icons)
 	{
-		//Note: Icons are ordered here as they appear in menu
-		//If you want to change the menu icons order, change the order here
-
-		//TODO: Add more icons names here
-
-		PLAY_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
+		ICON_START,
+		ICON_RESTART,
+		ICON_EXIT,
+		PLAY_ICON_COUNT		
 
 	};
 
@@ -88,7 +97,7 @@ public:
 	GUI();
 
 	// Input Functions  ---------------------------
-	void GetPointClicked(int& x, int& y) const;//Get coordinate where user clicks
+	void GetPointClicked(window& testWindow) const;//Get coordinate where user clicks
 	string GetSrting() const;	 //Returns a string entered by the user
 	operationType GetUseroperation() const; //Read the user click and map to an operation
 
