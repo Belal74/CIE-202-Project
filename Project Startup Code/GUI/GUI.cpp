@@ -39,9 +39,15 @@ GUI::GUI()
 //======================================================================================//
 //								Input Functions										//
 //======================================================================================//
-void GUI::GetPointClicked(int& x, int& y) const
+void GUI::GetPointClicked(window & testWindow) const
 {
-	pWind->WaitMouseClick(x, y);	//Wait for mouse click
+	int iX, iY;
+	testWindow.SetBuffering(true);
+	clicktype ctInput;
+	testWindow.FlushMouseQueue();
+	ctInput = testWindow.GetMouseClick(iX, iY);
+	testWindow.UpdateBuffer();
+	testWindow.SetBuffering(false);
 }
 
 string GUI::GetSrting() const
@@ -53,11 +59,11 @@ string GUI::GetSrting() const
 	while (1)
 	{
 		ktype = pWind->WaitKeyPress(Key);
-		if (ktype == ESCAPE )	//ESCAPE key is pressed
-			return "";	//returns nothing as user has cancelled label
-		if (Key == 13)	//ENTER key is pressed
+		if (ktype == ESCAPE )
+			return "";	
+		if (Key == 13)	
 			return Label;
-		if (Key == 8)	//BackSpace is pressed
+		if (Key == 8)	
 			if( Label.size() > 0)	
 				Label.resize(Label.size() - 1);
 			else
@@ -72,43 +78,48 @@ string GUI::GetSrting() const
 operationType GUI::GetUseroperation() const
 {
 	int x, y;
-	pWind->WaitMouseClick(x, y);	//Get the coordinates of the user click
+	pWind->WaitMouseClick(x, y);	
 
-	if (InterfaceMode == MODE_DRAW)	//GUI in the DRAW mode
+	if (InterfaceMode == MODE_DRAW)	
 	{
-		//[1] If user clicks on the Toolbar
+		
 		if (y >= 0 && y < ToolBarHeight)
 		{
-			//Check whick Menu icon was clicked
-			//==> This assumes that menu icons are lined up horizontally <==
+		
 			int ClickedIconOrder = (x / MenuIconWidth);
-			//Divide x coord of the point clicked by the menu icon width (int division)
-			//if division result is 0 ==> first icon is clicked, if 1 ==> 2nd icon and so on
 
 			switch (ClickedIconOrder)
 			{
 			case ICON_RECT: return DRAW_RECT;
 			case ICON_CIRC: return DRAW_CIRC;
 			case ICON_EXIT: return EXIT;
-
-			default: return EMPTY;	//A click on empty place in desgin toolbar
+			case ICON_OVAL: return DRAW_OVAL;
+			case ICON_LINE: return DRAW_LINE;
+			case ICON_IRREGULAR: return DRAW_IRREGULAR;
+			case ICON_REGULAR:	return DRAW_REGULAR;
+			case ICON_SQUA: return DRAW_SQUA;
+			case ICON_TRIANGLE: return DRAW_TRI;
+			case ICON_FILL: return FILL ;
+			case ICON_SELECT: return SELECT;
+			case ICON_DEl: return DEL;
+			case ICON_SAVE: return SAVE;
+			case ICON_SWITCH: return SWITCH;
+			default: return EMPTY;	
 			}
 		}
 
-		//[2] User clicks on the drawing area
+		
 		if (y >= ToolBarHeight && y < height - StatusBarHeight)
 		{
 			return DRAWING_AREA;
 		}
 
-		//[3] User clicks on the status bar
+
 		return STATUS;
 	}
-	else	//GUI is in PLAY mode
+	else	
 	{
-		///TODO:
-		//perform checks similar to Draw mode checks above
-		//and return the correspoding operation
+		
 		return TO_PLAY;	//just for now. This should be updated
 	}
 
@@ -148,39 +159,41 @@ void GUI::ClearStatusBar() const
 void GUI::CreateDrawToolBar() 
 {
 	InterfaceMode = MODE_DRAW;
-
-	//You can draw the tool bar icons in any way you want.
-	//Below is one possible way
-
-	//First prepare List of images for each menu icon
-	//To control the order of these images in the menu, 
-	//reoder them in UI_Info.h ==> enum DrawMenuIcon
 	string MenuIconImages[DRAW_ICON_COUNT];
-	MenuIconImages[ICON_RECT] = "images\\MenuIcons\\Menu_Rect.jpg";
-	MenuIconImages[ICON_CIRC] = "images\\MenuIcons\\Menu_Circ.jpg";
-	MenuIconImages[ICON_EXIT] = "images\\MenuIcons\\Menu_Exit.jpg";
-
-	//TODO: Prepare images for each menu icon and add it to the list
-
-	//Draw menu icon one image at a time
+	MenuIconImages[ICON_RECT] = "images\\MenuIcons\\REC.jpg";
+	MenuIconImages[ICON_CIRC] = "images\\MenuIcons\\CIRCLE.jpg";
+	MenuIconImages[ICON_OVAL] = "images\\MenuIcons\\OVAL.jpg";
+	MenuIconImages[ICON_LINE] = "images\\MenuIcons\\LINE.jpg";
+	MenuIconImages[ICON_IRREGULAR] = "images\\MenuIcons\\irregular shapes.jpg";
+	MenuIconImages[ICON_REGULAR] = "images\\MenuIcons\\REG.jpg";
+	MenuIconImages[ICON_SQUA] = "images\\MenuIcons\\SQA.jpg";
+	MenuIconImages[ICON_TRIANGLE] = "images\\MenuIcons\\OIP.jpg";
+	MenuIconImages[ICON_FILL] = "images\\MenuIcons\\fill.jpg";
+	MenuIconImages[ICON_SELECT] = "images\\MenuIcons\\select.jpg";
+	MenuIconImages[ICON_DEl] = "images\\MenuIcons\\Delete.jpg";
+	MenuIconImages[ICON_SAVE] = "images\\MenuIcons\\save.jpg";
+	MenuIconImages[ICON_SWITCH] = "images\\MenuIcons\\s.jpg";
+	MenuIconImages[ICON_EXIT] = "images\\MenuIcons\\EXIT.jpg";
 	for (int i = 0; i < DRAW_ICON_COUNT; i++)
 		pWind->DrawImage(MenuIconImages[i], i * MenuIconWidth, 0, MenuIconWidth, ToolBarHeight);
-
-
-
-	//Draw a line under the toolbar
-	pWind->SetPen(RED, 3);
+	pWind->SetPen(BLACK, 3);
 	pWind->DrawLine(0, ToolBarHeight, width, ToolBarHeight);
 
 }
-//////////////////////////////////////////////////////////////////////////////////////////
-
 void GUI::CreatePlayToolBar() 
 {
 	InterfaceMode = MODE_PLAY;
-	///TODO: write code to create Play mode menu
+	string MenuIconImages[DRAW_ICON_COUNT];
+	MenuIconImages[ICON_START] = "images\\MenuIcons\\R.jpg";
+	MenuIconImages[ICON_RESTART] = "images\\MenuIcons\\restart.jpg";
+	MenuIconImages[ICON_SWITCH] = "images\\MenuIcons\\s.jpg";
+	MenuIconImages[ICON_EXIT] = "images\\MenuIcons\\EXIT.jpg";
+	for (int i = 0; i < DRAW_ICON_COUNT; i++)
+		pWind->DrawImage(MenuIconImages[i], i * MenuIconWidth, 0, MenuIconWidth, ToolBarHeight);
+	pWind->SetPen(BLACK, 3);
+	pWind->DrawLine(0, ToolBarHeight, width, ToolBarHeight);
+
 }
-//////////////////////////////////////////////////////////////////////////////////////////
 
 void GUI::ClearDrawArea() const
 {
@@ -203,17 +216,44 @@ void GUI::PrintMessage(string msg) const	//Prints a message on status bar
 
 color GUI::getCrntDrawColor() const	//get current drwawing color
 {
+	int x, y;
+	pWind->SetBuffering(true);
+	pWind->FlushMouseQueue();
+	pWind->FlushKeyQueue();
+
+	// Loop until there is a mouse click
+	while (pWind->GetMouseClick(x, y) == NO_CLICK)
+	{
+		double dRed, dGreen, dBlue;
+		pWind->GetMouseCoord(x, y);
+		pWind->GetColor(x, y, dRed, dGreen, dBlue);
+		pWind->UpdateBuffer();
+	}
+	pWind->SetBuffering(false);
 	return DrawColor;
 }
-//////////////////////////////////////////////////////////////////////////////////////////
 
 color GUI::getCrntFillColor() const	//get current filling color
 {
+	int x, y;
+	pWind->SetBuffering(true);
+	pWind->FlushMouseQueue();
+	pWind->FlushKeyQueue();
+
+	// Loop until there is a mouse click
+	while (pWind->GetMouseClick(x, y) == NO_CLICK)
+	{
+		double dRed, dGreen, dBlue;
+		pWind->GetMouseCoord(x, y);
+		pWind->GetColor(x, y, dRed, dGreen, dBlue);
+		pWind->UpdateBuffer();
+	}
+	pWind->SetBuffering(false);
 	return FillColor;
 }
-//////////////////////////////////////////////////////////////////////////////////////////
 
-int GUI::getCrntPenWidth() const		//get current pen width
+
+int GUI::getCrntPenWidth() const		
 {
 	return PenWidth;
 }
